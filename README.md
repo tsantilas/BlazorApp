@@ -7,7 +7,7 @@ You have to develop
 Required: 
 - Configure application to use MongoDB (Community Edition)
 - A grid with all customers with server side paging
-- CRUD Operations on “Customer” model
+- CRUD Operations on “Customer” model with new, edit and delete functionalities
 - Expose all CRUD Operations as an API 
 
 Extra (nice to have) 
