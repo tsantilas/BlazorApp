@@ -1,6 +1,6 @@
 # Description
 
-You are given a solution that contains a Blazor Server Side Web App with a Customer model class. Write the admin panel for the “Customer” model. 
+You are given a solution that contains a Blazor Web App with a Customer model class. Write the admin panel for the “Customer” model. 
 
 You should fork this project and provide a github link for your solution.
 
