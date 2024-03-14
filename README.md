@@ -13,8 +13,8 @@ Required:
 - Expose all CRUD Operations as an API 
 
 Extra (nice to have) 
-- Add authentication with the provided demo Identity Server 4 https://demo.identityserver.io/
-- Protect your API with authentication with the provided demo Identity Server above
+- Add authentication with the provided demo of Duende IdentityServer https://demo.duendesoftware.com/
+- Protect your API with authentication with the provided demo of Duende IdentityServer done in the previous step
 - Unit & Integration Tests
 
 ## Requirements 
