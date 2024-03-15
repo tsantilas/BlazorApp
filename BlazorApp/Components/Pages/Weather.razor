@@ -1,11 +1,13 @@
-﻿@page "/fetchdata"
-
+﻿@page "/weather"
 @using BlazorApp.Data
+@attribute [StreamRendering]
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<PageTitle>Weather</PageTitle>
 
-<p>This component demonstrates fetching data from a service.</p>
+<h1>Weather</h1>
+
+<p>This component demonstrates showing data.</p>
 
 @if (forecasts == null)
 {
@@ -37,10 +39,14 @@ else
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+    private WeatherForecast[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500);
+        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
     }
+
+
 }
