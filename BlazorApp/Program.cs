@@ -12,10 +12,23 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddControllers();
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
+
+app.MapControllers();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
