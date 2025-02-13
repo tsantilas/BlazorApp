@@ -15,18 +15,6 @@ namespace BlazorApp.Client.Services
             _apiBaseUrl = configuration["ApiBaseUrl"];
         }
 
-        public async Task<(List<CustomerDto>, int)> GetCustomersAsync(int pageNumber, int pageSize)
-        {
-            var response = await _http.GetFromJsonAsync<CustomerApiResponse>($"{_apiBaseUrl}/api/Customers?pageNumber={pageNumber}&pageSize={pageSize}");
-            return (response?.Data ?? new List<CustomerDto>(), response?.TotalCount ?? 0);
-        }
-
-        public async Task<CustomerDto> GetCustomerByIdAsync(string id)
-        {
-            var response = await _http.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/api/Customers/{id}");
-            return response; // Return the customer by ID, or null if not found
-        }
-
         public async Task CreateCustomerAsync(CustomerDto customer)
         {
             await _http.PostAsJsonAsync($"{_apiBaseUrl}/api/Customers", customer);
@@ -41,5 +29,6 @@ namespace BlazorApp.Client.Services
         {
             await _http.DeleteAsync($"{_apiBaseUrl}/api/Customers/{customerId}");
         }
+
     }
 }
