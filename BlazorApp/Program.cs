@@ -1,5 +1,6 @@
 using BlazorApp.Components;
 using BlazorApp.Data;
+using BlazorApp.DbContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<MongoDbContext>();
 
 var app = builder.Build();
 
