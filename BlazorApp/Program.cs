@@ -3,6 +3,8 @@ using BlazorApp.Data;
 using BlazorApp.DbContext;
 using BlazorApp.IService;
 using BlazorApp.Service;
+using BlazorApp.Client.IService;
+using BlazorApp.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ICustomerClientService, CustomerClientService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
