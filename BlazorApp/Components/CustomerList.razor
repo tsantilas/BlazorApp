@@ -1,0 +1,60 @@
+﻿@inject ICustomerService CustomerService
+@rendermode InteractiveServer
+@using BlazorApp.Models
+@using BlazorApp.Service
+@using BlazorApp.IService
+
+<h3>Customer List</h3>
+
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+<Grid TItem="Customer"
+      Class="table table-hover table-bordered table-striped"
+      DataProvider="CustomersDataProvider"
+      AllowPaging="true"
+      Responsive="true">
+
+    <GridColumn TItem="Customer" HeaderText="ID" PropertyName="Id">@context.Id</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="Company Name" PropertyName="CompanyName">@context.CompanyName</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="Contact Name" PropertyName="ContactName">@context.ContactName</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="Phone" PropertyName="Phone">@context.Phone</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="City" PropertyName="City">@context.City</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="Country" PropertyName="Country">@context.Country</GridColumn>
+
+</Grid>
+
+@code {
+    private bool isLoading = true;
+
+    private async Task<GridDataProviderResult<Customer>> CustomersDataProvider(GridDataProviderRequest<Customer> request)
+    {
+        isLoading = true;
+        StateHasChanged(); // Update UI while loading
+
+        try
+        {
+            var (customerList, totalCount) = await CustomerService.GetAllCustomersAsync(request.PageNumber, request.PageSize);
+            return new GridDataProviderResult<Customer>
+                {
+                    Data = customerList,
+                    TotalCount = (int)totalCount
+                };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching customers: {ex.Message}");
+            return new GridDataProviderResult<Customer>
+                {
+                    Data = new List<Customer>(),
+                    TotalCount = 0
+                };
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged(); // Update UI after loading completes
+        }
+    }
+}
