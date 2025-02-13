@@ -19,6 +19,7 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
