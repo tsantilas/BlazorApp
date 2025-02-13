@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BlazorApp.Client\BlazorApp.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.13" />
+    <PackageReference Include="MongoDb.Driver" Version="3.2.0" />
   </ItemGroup>
 
 </Project>
