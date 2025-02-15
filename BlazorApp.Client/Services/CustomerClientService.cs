@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
 using BlazorApp.Client.IService;
 using BlazorApp.Client.Models;
 
@@ -13,6 +14,12 @@ namespace BlazorApp.Client.Services
         {
             _http = http;
             _apiBaseUrl = configuration["ApiBaseUrl"];
+        }
+
+        public async Task<CustomerDto> GetCustomerByIdAsync(string id)
+        {
+            var response = await _http.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/api/Customers/{id}");
+            return response;
         }
 
         public async Task CreateCustomerAsync(CustomerDto customer)

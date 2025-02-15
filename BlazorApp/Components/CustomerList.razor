@@ -1,4 +1,5 @@
 ﻿@inject ICustomerService CustomerService
+@inject NavigationManager Navigation
 @rendermode InteractiveServer
 @using BlazorApp.Models
 @using BlazorApp.Service
@@ -10,22 +11,43 @@
 {
     <p>Loading...</p>
 }
+
+
 <Grid TItem="Customer"
-      Class="table table-hover table-bordered table-striped"
-      DataProvider="CustomersDataProvider"
-      AllowPaging="true"
-      Responsive="true">
+    Class="table table-hover table-bordered table-striped"
+    DataProvider="CustomersDataProvider"
+    AllowPaging="true"
+    Responsive="true"
+    AllowSelection="true"
+    @bind-SelectedItems="@selectedCustomers"
+    SelectionMode="GridSelectionMode.Multiple">
 
     <GridColumn TItem="Customer" HeaderText="Company Name" PropertyName="CompanyName">@context.CompanyName</GridColumn>
     <GridColumn TItem="Customer" HeaderText="Contact Name" PropertyName="ContactName">@context.ContactName</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="Phone" PropertyName="Phone">@context.Phone</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="Address" PropertyName="Address">@context.Address</GridColumn>
     <GridColumn TItem="Customer" HeaderText="City" PropertyName="City">@context.City</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="Region" PropertyName="Region">@context.Region</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="PostalCode" PropertyName="PostalCode">@context.PostalCode</GridColumn>
     <GridColumn TItem="Customer" HeaderText="Country" PropertyName="Country">@context.Country</GridColumn>
+    <GridColumn TItem="Customer" HeaderText="Phone" PropertyName="Phone">@context.Phone</GridColumn>
 
 </Grid>
 
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="NavigateToCreate">
+        Create New Customer
+    </button>
+    <button class="btn btn-success" @onclick="NavigateToUpdate" disabled ="@(selectedCustomers.Count != 1)">
+        Updated Selected
+    </button>
+    <button class="btn btn-danger me-2" @onclick="DeleteSelectedCustomers" disabled="@(selectedCustomers.Count == 0)">
+        Delete Selected (@selectedCustomers.Count)
+    </button>
+</div>
+
 @code {
     private bool isLoading = true;
+    private HashSet<Customer> selectedCustomers = new HashSet<Customer>();
 
     private async Task<GridDataProviderResult<Customer>> CustomersDataProvider(GridDataProviderRequest<Customer> request)
     {
@@ -55,5 +77,38 @@
             isLoading = false;
             StateHasChanged(); // Update UI after loading completes
         }
+    }
+
+    private async Task DeleteSelectedCustomers()
+    {
+        if (selectedCustomers.Count == 0) return;
+
+        try
+        {
+            foreach (var customer in selectedCustomers)
+            {
+                await CustomerService.DeleteCustomerAsync(customer.Id);
+            }
+
+            selectedCustomers.Clear(); // Clear selection after deletion
+
+            // **Force Full Page Refresh**
+            Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting customers: {ex.Message}");
+        }
+    }
+
+    private void NavigateToCreate()
+    {
+        Navigation.NavigateTo("/create-customer");
+    }
+
+    private void NavigateToUpdate()
+    {
+        var customerId = selectedCustomers.First().Id;
+        Navigation.NavigateTo($"/update-customer/{customerId}");
     }
 }

@@ -1,0 +1,75 @@
+﻿@page "/update-customer/{customerId}"
+@inject ICustomerClientService CustomerService
+@inject NavigationManager Navigation
+@rendermode InteractiveAuto
+
+<h3 class="mb-4">Update Customer</h3>
+
+<EditForm Model="customer" OnValidSubmit="SaveCustomer">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="alert alert-danger" />
+
+    <div class="mb-3">
+        <label class="form-label">Company Name</label>
+        <InputText @bind-Value="customer.CompanyName" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Contact Name</label>
+        <InputText @bind-Value="customer.ContactName" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <InputText @bind-Value="customer.Address" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">City</label>
+        <InputText @bind-Value="customer.City" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Region</label>
+        <InputText @bind-Value="customer.Region" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Postal Code</label>
+        <InputText @bind-Value="customer.PostalCode" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Country</label>
+        <InputText @bind-Value="customer.Country" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <InputText @bind-Value="customer.Phone" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary ms-2" @onclick="Back">Back</button>
+</EditForm>
+
+@code {
+    [Parameter] public string customerId { get; set; }
+    private CustomerDto customer = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        customer = await CustomerService.GetCustomerByIdAsync(customerId);
+    }
+
+    private async Task SaveCustomer()
+    {
+        await CustomerService.UpdateCustomerAsync(customer);
+        Navigation.NavigateTo("/");
+    }
+
+    private void Back()
+    {
+        Navigation.NavigateTo("/");
+    }
+}
