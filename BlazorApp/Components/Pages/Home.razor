@@ -1,4 +1,14 @@
 ﻿@page "/"
+@rendermode InteractiveAuto
 
 <PageTitle>Home</PageTitle>
-<CustomerList></CustomerList>
+<CascadingAuthenticationState>
+	<AuthorizeView>
+		<Authorized>
+			<CustomerList></CustomerList>
+		</Authorized>
+		<NotAuthorized>
+			Login to view more!
+		</NotAuthorized>
+	</AuthorizeView>
+</CascadingAuthenticationState>
