@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace BlazorApp.DbContext
 {
-    public class MongoDbContext
+    public class MongoDbContext : IMongoDbContext
     {
         private readonly IMongoDatabase _database;
 

@@ -1,15 +1,15 @@
 ﻿using BlazorApp.DbContext;
-using BlazorApp.Models;
 using BlazorApp.IService;
+using BlazorApp.Models;
 using MongoDB.Driver;
 
 namespace BlazorApp.Service
 {
     public class CustomerService : ICustomerService
     {
-        private readonly MongoDbContext _dbContext;
+        private readonly IMongoDbContext _dbContext;
 
-        public CustomerService(MongoDbContext dbContext)
+        public CustomerService(IMongoDbContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -50,7 +50,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddControllers();
-builder.Services.AddSingleton<MongoDbContext>();
+builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ICustomerClientService, CustomerClientService>();
 
