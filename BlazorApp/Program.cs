@@ -42,13 +42,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddHttpClient<ICustomerClientService, CustomerClientService>(options =>
-{
-    options.BaseAddress = new Uri("https://localhost:5000");
-}
-);
-
-
+builder.Services.AddHttpClient<ICustomerClientService, CustomerClientService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
