@@ -1,9 +1,7 @@
 ﻿@inject ICustomerService CustomerService
 @inject NavigationManager Navigation
+@attribute [Authorize]
 @rendermode InteractiveServer
-@using BlazorApp.Models
-@using BlazorApp.Service
-@using BlazorApp.IService
 
 <h3>Customer List</h3>
 

@@ -28,16 +28,6 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("profile");
     options.Scope.Add("email");
     options.Scope.Add("api");
-    options.SaveTokens = true;
-    options.GetClaimsFromUserInfoEndpoint = true;
-    options.MapInboundClaims = false;
-
-    // Add these lines to handle the redirect
-    options.Events.OnRedirectToIdentityProvider = context =>
-    {
-        context.ProtocolMessage.RedirectUri = $"{context.Request.Scheme}://{context.Request.Host}/signin-oidc";
-        return Task.CompletedTask;
-    };
 });
 
 
@@ -52,7 +42,12 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<ICustomerClientService, CustomerClientService>();
+builder.Services.AddHttpClient<ICustomerClientService, CustomerClientService>(options =>
+{
+    options.BaseAddress = new Uri("https://localhost:5000");
+}
+);
+
 
 
 builder.Services.AddEndpointsApiExplorer();

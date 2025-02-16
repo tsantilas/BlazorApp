@@ -1,7 +1,8 @@
 ﻿@page "/update-customer/{customerId}"
-@inject ICustomerClientService CustomerService
+@attribute [Authorize]
+@inject ICustomerService CustomerService
 @inject NavigationManager Navigation
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <h3 class="mb-4">Update Customer</h3>
 
@@ -55,7 +56,7 @@
 
 @code {
     [Parameter] public string customerId { get; set; }
-    private CustomerDto customer = new();
+    private Customer customer = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,7 +65,7 @@
 
     private async Task SaveCustomer()
     {
-        await CustomerService.UpdateCustomerAsync(customer);
+        await CustomerService.UpdateCustomerAsync(customerId, customer);
         Navigation.NavigateTo("/");
     }
 

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BlazorApp.Models;
 using BlazorApp.IService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorApp.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CustomersController : ControllerBase

@@ -1,7 +1,8 @@
 ﻿@page "/create-customer"
+@attribute [Authorize]
 @inject ICustomerClientService CustomerService
 @inject NavigationManager Navigation
-@rendermode InteractiveAuto
+@rendermode InteractiveWebAssembly
 
 <h3 class="mb-4">Create Customer</h3>
 
