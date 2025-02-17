@@ -76,7 +76,7 @@ namespace BlazorApp.Tests.Integration
             )), Times.Once);
 
             // Assert: Verify that navigation occurred.
-            Assert.Equal("http://localhost/", navManager.Uri);
+            Assert.Equal("http://localhost/customers", navManager.Uri);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace BlazorApp.Tests.Integration
             await component.InvokeAsync(() => component.Find("button.btn.btn-secondary").Click());
 
             // Assert: Verify that navigation occurred (navManager.Uri should be "http://localhost/").
-            Assert.Equal("http://localhost/", navManager.Uri);
+            Assert.Equal("http://localhost/customers", navManager.Uri);
         }
     }
 }

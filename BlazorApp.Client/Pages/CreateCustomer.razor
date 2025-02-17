@@ -60,11 +60,11 @@
     private async Task SaveCustomer()
     {
         await CustomerService.CreateCustomerAsync(customer);
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo("/customers");
     }
 
     private void Back()
     {
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo("/customers");
     }
 }
