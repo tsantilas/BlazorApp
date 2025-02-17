@@ -8,6 +8,7 @@ using BlazorApp.Client.Services;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
+using BlazorApp.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,8 @@ builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddHttpClient<ICustomerClientService, CustomerClientService>();
 
+builder.Services.AddTransient<CustomerSeeder>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
@@ -71,6 +74,12 @@ else
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<CustomerSeeder>();
+    await seeder.SeedAsync();
 }
 
 app.UseHttpsRedirection();
