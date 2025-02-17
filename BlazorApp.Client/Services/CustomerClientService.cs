@@ -19,6 +19,12 @@ namespace BlazorApp.Client.Services
             _http.BaseAddress = new Uri(_navigationManager.BaseUri);
         }
 
+        public async Task<(List<CustomerDto>, int)> GetCustomersAsync(int pageNumber, int pageSize)
+        {
+            var response = await _http.GetFromJsonAsync<CustomerApiResponse>($"api/Customers?pageNumber={pageNumber}&pageSize={pageSize}");
+            return (response?.Data ?? new List<CustomerDto>(), response?.TotalCount ?? 0);
+        }
+
         public async Task<CustomerDto> GetCustomerByIdAsync(string id)
         {
             return await _http.GetFromJsonAsync<CustomerDto>($"api/Customers/{id}");

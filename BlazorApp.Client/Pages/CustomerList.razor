@@ -1,7 +1,8 @@
-﻿@inject ICustomerService CustomerService
+﻿@page "/customers"
+@inject ICustomerClientService CustomerService
 @inject NavigationManager Navigation
 @attribute [Authorize]
-@rendermode InteractiveServer
+@rendermode InteractiveWebAssembly
 
 <h3>Customer List</h3>
 
@@ -11,7 +12,7 @@
 }
 
 
-<Grid TItem="Customer"
+<Grid TItem="CustomerDto"
     Class="table table-hover table-bordered table-striped"
     DataProvider="CustomersDataProvider"
     AllowPaging="true"
@@ -20,14 +21,14 @@
     @bind-SelectedItems="@selectedCustomers"
     SelectionMode="GridSelectionMode.Multiple">
 
-    <GridColumn TItem="Customer" HeaderText="Company Name" PropertyName="CompanyName">@context.CompanyName</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="Contact Name" PropertyName="ContactName">@context.ContactName</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="Address" PropertyName="Address">@context.Address</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="City" PropertyName="City">@context.City</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="Region" PropertyName="Region">@context.Region</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="PostalCode" PropertyName="PostalCode">@context.PostalCode</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="Country" PropertyName="Country">@context.Country</GridColumn>
-    <GridColumn TItem="Customer" HeaderText="Phone" PropertyName="Phone">@context.Phone</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="Company Name" PropertyName="CompanyName">@context.CompanyName</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="Contact Name" PropertyName="ContactName">@context.ContactName</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="Address" PropertyName="Address">@context.Address</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="City" PropertyName="City">@context.City</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="Region" PropertyName="Region">@context.Region</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="PostalCode" PropertyName="PostalCode">@context.PostalCode</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="Country" PropertyName="Country">@context.Country</GridColumn>
+    <GridColumn TItem="CustomerDto" HeaderText="Phone" PropertyName="Phone">@context.Phone</GridColumn>
 
 </Grid>
 
@@ -45,17 +46,17 @@
 
 @code {
     private bool isLoading = true;
-    private HashSet<Customer> selectedCustomers = new HashSet<Customer>();
+    private HashSet<CustomerDto> selectedCustomers = new HashSet<CustomerDto>();
 
-    private async Task<GridDataProviderResult<Customer>> CustomersDataProvider(GridDataProviderRequest<Customer> request)
+    private async Task<GridDataProviderResult<CustomerDto>> CustomersDataProvider(GridDataProviderRequest<CustomerDto> request)
     {
         isLoading = true;
         StateHasChanged(); // Update UI while loading
 
         try
         {
-            var (customerList, totalCount) = await CustomerService.GetAllCustomersAsync(request.PageNumber, request.PageSize);
-            return new GridDataProviderResult<Customer>
+            var (customerList, totalCount) = await CustomerService.GetCustomersAsync(request.PageNumber, request.PageSize);
+            return new GridDataProviderResult<CustomerDto>
                 {
                     Data = customerList,
                     TotalCount = (int)totalCount
@@ -64,9 +65,9 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error fetching customers: {ex.Message}");
-            return new GridDataProviderResult<Customer>
+            return new GridDataProviderResult<CustomerDto>
                 {
-                    Data = new List<Customer>(),
+                    Data = new List<CustomerDto>(),
                     TotalCount = 0
                 };
         }
