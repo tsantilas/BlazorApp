@@ -1,8 +1,8 @@
 ﻿@page "/update-customer/{customerId}"
 @attribute [Authorize]
-@inject ICustomerService CustomerService
+@inject ICustomerClientService CustomerService
 @inject NavigationManager Navigation
-@rendermode InteractiveServer
+@rendermode InteractiveWebAssembly
 
 <h3 class="mb-4">Update Customer</h3>
 
@@ -56,21 +56,41 @@
 
 @code {
     [Parameter] public string customerId { get; set; }
-    private Customer customer = new();
+    private CustomerDto customer = new();
+    private bool isLoading = true;
+    private string errorMessage;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        customer = await CustomerService.GetCustomerByIdAsync(customerId);
+        try
+        {
+            isLoading = true;
+            customer = await CustomerService.GetCustomerByIdAsync(customerId);
+            
+            if (customer == null)
+            {
+                errorMessage = "Customer not found";
+                Navigation.NavigateTo("/customers");
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading customer: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 
     private async Task SaveCustomer()
     {
-        await CustomerService.UpdateCustomerAsync(customerId, customer);
-        Navigation.NavigateTo("/");
+        await CustomerService.UpdateCustomerAsync(customer);
+        Navigation.NavigateTo("/customers");
     }
 
     private void Back()
     {
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo("/customers");
     }
 }
